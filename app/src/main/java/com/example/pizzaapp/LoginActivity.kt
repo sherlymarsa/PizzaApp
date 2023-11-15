@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 
 class LoginActivity : AppCompatActivity() {
@@ -20,6 +21,9 @@ class LoginActivity : AppCompatActivity() {
         val txtPassword:EditText = findViewById(R.id.editTextPassword)
         //instance button login
         val btnLogin:Button = findViewById(R.id.buttonLogin)
+        val btnRegist:TextView = findViewById(R.id.registText)
+
+        //event
 
         //event button login
         btnLogin.setOnClickListener {
@@ -33,8 +37,12 @@ class LoginActivity : AppCompatActivity() {
             if (data == null){
                 //insert data
                 databaseHelper.addAcount("sherly@amikom.ac.id",
-                "Sherly Marsaraina Dabit", "Carshier", "12345")
+                "Sherly Marsaraina Dabit", "Cashier", "12345")
             }
+
+            //instance databasehelper
+            val dbHelper = DatabaseHelper(this)
+            dbHelper.addAcount("sherly@amikom.ac.id", "Sherly Marsaraina Dabit", "Cashier", "12345")
 
             val email = txtUsername.text.toString().trim()
             val password = txtPassword.text.toString().trim()

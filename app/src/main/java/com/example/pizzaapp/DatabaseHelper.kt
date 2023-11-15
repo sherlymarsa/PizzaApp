@@ -5,9 +5,10 @@ import android.content.ContentValues
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.widget.Toast
 
 
-class DatabaseHelper (context: Context): SQLiteOpenHelper(
+class DatabaseHelper (var context: Context): SQLiteOpenHelper(
     context,DATABASE_NAME, null, DATABASE_VERSION
 ) {
     companion object{
@@ -55,7 +56,7 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(
             null )
 
         val cursorCount = cursor.count
-                cursor.close()
+        cursor.close()
         db.close()
 
         //check data available or not
@@ -67,7 +68,7 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(
 
     //add User
     fun addAcount(email: String, name:String, level:String, password: String){
-        val db = this.readableDatabase
+        val db = this.writableDatabase
 
         val values = ContentValues()
         values.put(COLUMN_EMAIL, email)
@@ -75,7 +76,15 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(
         values.put(COLUMN_LEVEL, level)
         values.put(COLUMN_PASSWORD, password)
 
-        db.insert(TABLE_ACCOUNT, null, values)
+        val result = db.insert(TABLE_ACCOUNT, null, values)
+        //show message
+        if (result==(0).toLong()){
+            Toast.makeText(context, "Register Failed", Toast.LENGTH_SHORT).show()
+        }
+        else {
+            Toast.makeText(context, "Register Succes, " +
+                    "please login using your new account", Toast.LENGTH_SHORT).show()
+        }
         db.close()
     }
 
