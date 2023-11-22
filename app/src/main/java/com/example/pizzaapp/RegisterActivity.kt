@@ -32,7 +32,7 @@ class RegisterActivity : AppCompatActivity() {
             //check data -> email sudah terdaftar atau belum
             val data:String = databaseHelper.checkData(email)
             //jika belum terdaftar
-            if(data == null){
+            if(data == ""){
                 //insert data
                 databaseHelper.addAcount(
                     email,name, level, password)

@@ -23,13 +23,18 @@ class LoginActivity : AppCompatActivity() {
         val btnLogin:Button = findViewById(R.id.buttonLogin)
         val btnRegist:TextView = findViewById(R.id.registText)
 
-        //event
+        //event button Regist
+        btnRegist.setOnClickListener{
+            val intentRegist = Intent(this, RegisterActivity::class.java)
+            startActivity(intentRegist)
+        }
 
         //event button login
         btnLogin.setOnClickListener {
             //object class databaseHelper
             val databaseHelper = DatabaseHelper (this)
 
+            /*
             //check data
             val data:String = databaseHelper.checkData("sherly@amikom.ac.id")
             Toast.makeText(this@LoginActivity, "Result : " + data,
@@ -43,6 +48,7 @@ class LoginActivity : AppCompatActivity() {
             //instance databasehelper
             val dbHelper = DatabaseHelper(this)
             dbHelper.addAcount("sherly@amikom.ac.id", "Sherly Marsaraina Dabit", "Cashier", "12345")
+            */
 
             val email = txtUsername.text.toString().trim()
             val password = txtPassword.text.toString().trim()

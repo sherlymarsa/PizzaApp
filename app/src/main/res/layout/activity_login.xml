@@ -91,13 +91,13 @@
             android:id="@+id/textView9"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Dont Have An Account ?" />
+            android:text="Dont Have An Account?" />
 
         <TextView
             android:id="@+id/registText"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Register Here"
+            android:text=" Register Here"
             android:textColor="#D02C1A" />
 
 </LinearLayout>
