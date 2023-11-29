@@ -3,11 +3,15 @@ package com.example.pizzaapp;
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context;
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.widget.Toast
 import com.example.pizzaapp.model.MenuModel
+import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 
 
@@ -157,4 +161,37 @@ class DatabaseHelper (var context: Context): SQLiteOpenHelper(
         db.close()
         return name
     }
+
+    @SuppressLint("Range")
+    fun showMenu(): ArrayList<MenuModel> {
+        val listModel = ArrayList<MenuModel>()
+        val db = this.readableDatabase
+        var cursor: Cursor? = null
+
+        try {
+            cursor = db.rawQuery("SELECT * FROM $TABLE_MENU", null)
+        } catch (se: SQLiteException) {
+            db.execSQL(CREATE_MENU_TABLE)
+            return ArrayList()
+        }
+
+        if (cursor?.moveToFirst() == true) {
+            do {
+                val id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID_MENU))
+                val name = cursor.getString(cursor.getColumnIndex(COLUMN_NAMA_MENU))
+                val price = cursor.getInt(cursor.getColumnIndex(COLUMN_PRICE_MENU))
+
+                val imageArray = cursor.getBlob(cursor.getColumnIndex(COLUMN_IMAGE))
+                val byteInputStream = ByteArrayInputStream(imageArray)
+                val imageBmp = BitmapFactory.decodeStream(byteInputStream)
+
+                val model = MenuModel(id = id, name = name, price = price, image = imageBmp)
+                listModel.add(model)
+            } while (cursor.moveToNext())
+        }
+
+        cursor?.close()
+        return listModel
+    }
+
 }

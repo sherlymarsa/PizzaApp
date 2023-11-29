@@ -38,22 +38,22 @@ class FragmentMakanan : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_makanan, container, false)
         val rvmakanan: RecyclerView = view.findViewById(R.id.recyclerMakanan)
-        rvmakanan.layoutManager = LinearLayoutManager(activity)
-        rvmakanan.adapter = MenuAdapter()
+        val databaseHelper = DatabaseHelper(this.requireContext())
 
-        //instance button add menu
+        val listData = databaseHelper.showMenu()
+
+        rvmakanan.layoutManager = LinearLayoutManager(activity)
+        rvmakanan.adapter = MakananAdapter(listData)
+
         val buttonAdd : Button = view.findViewById(R.id.buttonAddMenu)
-        //event saat button add menu di-klik
         buttonAdd.setOnClickListener{
-            requireActivity().run {
+            requireActivity().run{
                 startActivity(Intent(this, AddMenuActivity::class.java))
                 finish()
             }
         }
-
         return view
     }
 
