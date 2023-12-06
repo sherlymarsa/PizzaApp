@@ -135,7 +135,31 @@ class DatabaseHelper (var context: Context): SQLiteOpenHelper(
             Toast.makeText(context,"Add menu Success",Toast.LENGTH_SHORT).show()
         }
         db.close()
+    }
 
+    //update
+    fun updateMenu(menu:MenuModel){
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put(COLUMN_ID_MENU, menu.id)
+        values.put(COLUMN_NAMA_MENU, menu.name)
+        values.put(COLUMN_PRICE_MENU, menu.price)
+        //prepare image
+        val byteOutputStream = ByteArrayOutputStream()
+        val imageInByte:ByteArray
+        menu.image.compress(Bitmap.CompressFormat.JPEG,100,byteOutputStream)
+        imageInByte = byteOutputStream.toByteArray()
+        values.put(COLUMN_IMAGE, imageInByte)
+
+        val result = db.update(TABLE_MENU,values, COLUMN_ID_MENU + "=? ", arrayOf(menu.id.toString())).toLong()
+        //show image
+        if (result==(0).toLong()){
+            Toast.makeText(context,"Add menu failed",Toast.LENGTH_SHORT).show()
+        }
+        else {
+            Toast.makeText(context,"Add menu Success",Toast.LENGTH_SHORT).show()
+        }
+        db.close()
     }
 
 
